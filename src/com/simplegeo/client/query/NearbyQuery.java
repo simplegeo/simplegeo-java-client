@@ -46,6 +46,7 @@ public abstract class NearbyQuery implements IQuery {
 	private String cursor;
 	private String layer;
 	private List<String> types;
+	private String tag;
 	private int limit;
 	private double start;
 	private double end;
@@ -58,21 +59,39 @@ public abstract class NearbyQuery implements IQuery {
 	 * @throws ValidLayerException
 	 */
 	public NearbyQuery(String layer, List<String> types, int limit, String cursor) throws ValidLayerException {
-		this(layer, types, limit, cursor, -1, -1);
+		this(layer, types, limit, cursor, -1, -1, null);
+	}
+	/**
+	 * @param layer @see com.simplegeo.client.query.NearbyQuery#getLayer()
+	 * @param types @see com.simplegeo.client.query.NearbyQuery#getTypes()
+	 * @param limit @see com.simplegeo.client.query.NearbyQuery#getLimit()
+	 * @param cursor @see com.simplegeo.client.query.IQuery#getCursor()
+	 * @param limit @see com.simplegeo.client.query.NearbyQuery#getTag()
+	 * @throws ValidLayerException
+	 */
+	public NearbyQuery(String layer, List<String> types, int limit, String cursor, String tag) throws ValidLayerException {
+		this(layer, types, limit, cursor, -1, -1, tag);
 	}
 	
 	public NearbyQuery(String layer, List<String> types, int limit, String cursor, double start, double end) 
 			throws ValidLayerException {
 
+		this(layer, types, limit, cursor, start, end, null);
+	}
+
+	public NearbyQuery(String layer, List<String> types, int limit, String cursor, double start, double end,
+			String tag)	throws ValidLayerException {
+
 		this.types = types;
 		this.cursor = cursor;
 		this.limit = limit;
-		
+		this.tag = tag;
+
 		if (layer == null || layer.equals(""))
 			throw new ValidLayerException("");
 
 		this.layer = layer;
-		
+
 		this.start = start;
 		this.end = end;
 	}
@@ -90,6 +109,9 @@ public abstract class NearbyQuery implements IQuery {
 		
 		if(cursor != null)
 			params.put("cursor", cursor);
+
+		if(tag != null)
+			params.put("tag", tag);
 		
 		if(start > 0 && end > 0) {
 			params.put("start", Double.toString(start));
@@ -132,6 +154,20 @@ public abstract class NearbyQuery implements IQuery {
 	 */
 	public void setLayer(String layer) {
 		this.layer = layer;
+	}
+
+	/**
+	 * @return the tag
+	 */
+	public String getTag() {
+		return tag;
+	}
+
+	/**
+	 * @param tag the tag to search in
+	 */
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 	/**

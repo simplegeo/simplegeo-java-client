@@ -57,7 +57,7 @@ public class LatLonNearbyQuery extends NearbyQuery {
 	public LatLonNearbyQuery(double lat, double lon, double radius, String layer) throws ValidLayerException {
 		this(lat, lon, radius, layer, null, -1, null);
 	}
-	
+
 	/**
 	 * @param lat the latitude
 	 * @param lon the longitude
@@ -70,7 +70,23 @@ public class LatLonNearbyQuery extends NearbyQuery {
 	 */
 	public LatLonNearbyQuery(double lat, double lon, double radius, String layer, List<String> types, int limit,
 			String cursor) throws ValidLayerException {
-		super(layer, types, limit, cursor);
+		this(lat, lon, radius, layer, types, limit, cursor, null);
+	}
+
+	/**
+	 * @param lat the latitude
+	 * @param lon the longitude
+	 * @param radius the radius of the search in km
+	 * @param @see com.simplegeo.client.query.NearbyQuery#getLayer()
+	 * @param @see com.simplegeo.client.query.NearbyQuery#getTypes()
+	 * @param @see com.simplegeo.client.query.NearbyQuery#getLimit()
+	 * @param @see com.simplegeo.client.query.NearbyQuery#getCursor()
+	 * @param @see com.simplegeo.client.query.NearbyQuery#getTag()
+	 * @throws ValidLayerException
+	 */
+	public LatLonNearbyQuery(double lat, double lon, double radius, String layer, List<String> types, int limit,
+			String cursor, String tag) throws ValidLayerException {
+		super(layer, types, limit, cursor, tag);
 		this.lat = lat;
 		this.lon = lon;
 		this.radius = radius;
