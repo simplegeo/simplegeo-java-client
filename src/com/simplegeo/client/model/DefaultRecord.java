@@ -39,7 +39,7 @@ import com.simplegeo.client.types.Point;
  * @author Derek Smith
  */
 public class DefaultRecord implements IRecord {
-	
+
 	private String recordId;
 	private String layer;
 	private String type;
@@ -47,6 +47,7 @@ public class DefaultRecord implements IRecord {
 	private long expiration;
 	private double latitude;
 	private double longitude;
+	private double distance;
 	private JSONObject properties;
 
 	/**
@@ -57,19 +58,27 @@ public class DefaultRecord implements IRecord {
 	 * @param type the type associated with the record 
 	 * @param longitude
 	 * @param latitude
+	 * @param distance
 	 * @see com.simplegeo.client.model.RecordType
 	 */
-	public DefaultRecord(String recordId, String layer, String type, double longitude, double latitude) {
-		
+	public DefaultRecord(String recordId, String layer, String type,
+			double longitude, double latitude, double distance) {
+
 		this.recordId = recordId;
 		this.layer = layer;
 		this.type = type;
 		this.longitude = longitude;
 		this.latitude = latitude;
+		this.distance = (distance == 0.0) ? -1.0 : distance;
 		setProperties(new JSONObject());
-	
-		this.created = (long)(System.currentTimeMillis() / 1000);
+
+		this.created = (long) (System.currentTimeMillis() / 1000);
 		this.expiration = 0;
+	}
+
+	public DefaultRecord(String recordId, String layer, String type,
+			double longitude, double latitude) {
+		this(recordId, layer, type, longitude, latitude, 0.0);
 	}
 
 	/**
@@ -79,9 +88,9 @@ public class DefaultRecord implements IRecord {
 	 * @see com.simplegeo.client.model.RecordType
 	 */
 	public DefaultRecord(String recordId, String layer, String type) {
-		this(recordId, layer, type, 0.0, 0.0);
+		this(recordId, layer, type, 0.0, 0.0, 0.0);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.simplegeo.client.model.IRecord#getLayer()
 	 */
@@ -116,21 +125,35 @@ public class DefaultRecord implements IRecord {
 	public double getLongitude() {
 		return longitude;
 	}
-	
+
 	/**
 	 * @param longitude
 	 */
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see com.simplegeo.client.model.IRecord#getLongitude()
+	 */
+	public double getDistance() {
+		return distance;
+	}
+
+	/**
+	 * @param distance
+	 */
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
 	/* (non-Javadoc)
 	 * @see com.simplegeo.client.model.IRecord#getRecordId()
 	 */
 	public String getRecordId() {
 		return recordId;
 	}
-	
+
 	/**
 	 * @param recordId the id associated with the record
 	 */
@@ -144,35 +167,35 @@ public class DefaultRecord implements IRecord {
 	public String getObjectType() {
 		return type;
 	}
-	
+
 	/**
 	 * @param type the type associated with the record
 	 */
 	public void setObjectType(String type) {
 		this.type = type;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.simplegeo.client.model.IRecord#getCreated()
 	 */
 	public long getCreated() {
 		return created;
 	}
-	
+
 	/**
 	 * @param created the time at which this record was created in milliseconds
 	 */
 	public void setCreated(long created) {
 		this.created = created;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.simplegeo.client.model.IRecord#getExpiration()
 	 */
 	public long getExpiration() {
 		return expiration;
 	}
-	
+
 	/**
 	 * @param expiration the time at which this record will expire in milliseconds
 	 */
@@ -186,14 +209,14 @@ public class DefaultRecord implements IRecord {
 	public JSONObject getProperties() {
 		return this.properties;
 	}
-	
+
 	/**
 	 * @param properties other values associated with this record
 	 */
 	public void setProperties(JSONObject properties) {
 		this.properties = properties;
 	}
-	
+
 	/**
 	 * @param key the key to look-up in the {@link org.json.JSONObject} properties 
 	 * @return the integer value
@@ -205,10 +228,10 @@ public class DefaultRecord implements IRecord {
 		} catch (JSONException e) {
 			;
 		}
-		
+
 		return value;
 	}
-	
+
 	/**
 	 * @param key the key to use
 	 * @param value the integer value that will be assigned
@@ -218,10 +241,9 @@ public class DefaultRecord implements IRecord {
 		try {
 			getProperties().put(key, value);
 		} catch (JSONException e) {
-			
 		}
 	}
-	
+
 	/**
 	 * @param key the key to look-up in the {@link org.json.JSONObject} properties 
 	 * @return the double value
@@ -232,11 +254,11 @@ public class DefaultRecord implements IRecord {
 			value = getProperties().getDouble(key);
 		} catch (JSONException e) {
 			;
-		}	
-		
+		}
+
 		return value;
 	}
-	
+
 	/**
 	 * @param key the key to use
 	 * @param value the double value that will be assigned
@@ -246,10 +268,9 @@ public class DefaultRecord implements IRecord {
 		try {
 			getProperties().put(key, value);
 		} catch (JSONException e) {
-			
-		}	
+		}
 	}
-	
+
 	/**
 	 * @param key the key to look-up in the {@link org.json.JSONObject} properties 
 	 * @return the long value
@@ -260,11 +281,11 @@ public class DefaultRecord implements IRecord {
 			value = getProperties().getLong(key);
 		} catch (JSONException e) {
 			;
-		}	
-		
+		}
+
 		return value;
 	}
-	
+
 	/**
 	 * @param key the key to use
 	 * @param value the long value that will be assigned
@@ -274,7 +295,6 @@ public class DefaultRecord implements IRecord {
 		try {
 			getProperties().put(key, value);
 		} catch (JSONException e) {
-			
 		}
 	}
 
@@ -288,26 +308,26 @@ public class DefaultRecord implements IRecord {
 			value = getProperties().get(key);
 		} catch (JSONException e) {
 			;
-		}	
-		
+		}
+
 		return value;
 	}
-	
+
 	/**
 	 * @param key the key to use
 	 * @param value the Object value that will be assigned
 	 * to the key in the properties {@link org.json.JSONObject}.
 	 */
 	public void setObjectProperty(String key, Object value) {
-		if(value == null)
+		if (value == null) {
 			value = JSONObject.NULL;
+		}
 		try {
 			getProperties().put(key, value);
 		} catch (JSONException e) {
-			
 		}
 	}
-	
+
 	public Point getOrigin() {
 		return new Point(this.latitude, this.longitude);
 	}
@@ -317,9 +337,8 @@ public class DefaultRecord implements IRecord {
 	 */
 	@Override
 	public String toString() {
-		
-		return String.format("<DefaultRecord id=%s, layer=%s, lat=%f, lon=%f, type=%s, created=%d>", 
+
+		return String.format("<DefaultRecord id=%s, layer=%s, lat=%f, lon=%f, type=%s, created=%d>",
 				getRecordId(), getLayer(), getLatitude(), getLongitude(), getObjectType(), getCreated());
 	}
-	
 }
