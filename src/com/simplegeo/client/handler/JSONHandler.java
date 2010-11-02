@@ -29,8 +29,8 @@
 package com.simplegeo.client.handler;
 
 import java.util.logging.Logger;
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A response handler that converts the payload into a JSONObject.
@@ -43,12 +43,12 @@ public class JSONHandler implements SimpleGeoJSONHandlerIfc {
 
 	
 	public Object parseResponse(String response) {
-		JSONArray topObject = null;
+		JSONObject topObject = null;
         try {
 
         	String jsonString = response;
         	if(jsonString != null && jsonString.length() > 1)
-        		topObject = new JSONArray(jsonString);
+        		topObject = new JSONObject(jsonString);
         	
         } catch (JSONException e) {
 			
