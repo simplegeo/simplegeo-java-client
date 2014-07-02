@@ -76,7 +76,8 @@ public class GeoJSONEncoder {
 			defaultRecord = new DefaultRecord(geoJSONObject.optString("id"),
 					geoJSONObject.optString("layer"), geoJSONObject
 							.getProperties().optString("type"), geoJSONObject
-							.getLongitude(), geoJSONObject.getLatitude());
+							.getLongitude(), geoJSONObject.getLatitude(),
+							geoJSONObject.optDouble("distance"));
 
 			defaultRecord.setProperties(properties);
 
